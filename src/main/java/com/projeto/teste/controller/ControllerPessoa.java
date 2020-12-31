@@ -49,5 +49,10 @@ public class ControllerPessoa {
 			return ResponseEntity.ok().body(atualiza);
 		}).orElse(ResponseEntity.notFound().build());
 	}
+	
+	@GetMapping(path = "/lista")
+	public Iterable<Pessoa> findAll(){
+	   return repositorioPessoa.findAll();
+	}
 
 }
