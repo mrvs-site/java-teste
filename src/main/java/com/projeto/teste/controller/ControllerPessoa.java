@@ -23,7 +23,7 @@ public class ControllerPessoa {
 
 	@GetMapping
 	public String lista() {
-		return "lista pessoa";
+		return "<html><center><h1>lista pessoa</h1></center></html>";
 	}
 
 	@PostMapping
