@@ -15,7 +15,7 @@ import com.projeto.teste.entity.Pessoa;
 import com.projeto.teste.repository.RepositoryPessoa;
 
 @RestController
-@RequestMapping(path = "/inicio")
+@RequestMapping(path = "/")
 public class ControllerPessoa {
 
 	@Autowired
