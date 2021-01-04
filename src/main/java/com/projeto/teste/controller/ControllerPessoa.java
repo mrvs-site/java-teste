@@ -1,7 +1,12 @@
 package com.projeto.teste.controller;
 
+import java.io.IOException;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.projeto.teste.entity.Pessoa;
 import com.projeto.teste.repository.RepositoryPessoa;
+import com.projeto.teste.security.TokenUtil;
 
 @RestController
 @RequestMapping(path = "/")
@@ -20,6 +26,21 @@ public class ControllerPessoa {
 
 	@Autowired
 	private RepositoryPessoa repositorioPessoa;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
+	
+	@Autowired
+	private TokenUtil token;
+
+	@PostMapping("/users/sign-up")
+	public void signUp(@RequestBody Pessoa pessoa, HttpServletResponse res) throws IOException {
+		pessoa.setPassword(bCryptPasswordEncoder.encode(pessoa.getPassword()));
+		repositorioPessoa.save(pessoa);
+
+		res.getWriter().write(token.criarToken(pessoa));
+		res.getWriter().flush();
+	}
 
 	@GetMapping
 	public String lista() {
@@ -32,8 +53,10 @@ public class ControllerPessoa {
 	}
 
 	@DeleteMapping(path = "/{id}")
-	public ResponseEntity<?> remover(@PathVariable long id) {
+	public ResponseEntity<?> remover(@PathVariable Long id) throws Exception {
 
+//		throw new Exception();
+		
 		return repositorioPessoa.findById(id).map(p -> {
 			repositorioPessoa.deleteById(id);
 			return ResponseEntity.ok().build();
@@ -49,10 +72,16 @@ public class ControllerPessoa {
 			return ResponseEntity.ok().body(atualiza);
 		}).orElse(ResponseEntity.notFound().build());
 	}
-	
+
 	@GetMapping(path = "/lista")
-	public Iterable<Pessoa> findAll(){
-	   return repositorioPessoa.findAll();
+	public Iterable<Pessoa> findAll() {
+		return repositorioPessoa.findAll();
 	}
+	
+	@GetMapping(path = "/teste")
+	public void teste() {
+		throw new NullPointerException();
+	}
+	
 
 }
