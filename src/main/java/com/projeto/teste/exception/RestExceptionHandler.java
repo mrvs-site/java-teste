@@ -28,8 +28,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
 			return new ResponseEntity<>("E-mail already exists", HttpStatus.BAD_REQUEST);
 		}
 		
+		
+		if(e instanceof NullPointerException) {
+			return new ResponseEntity<>("Missing fields", HttpStatus.BAD_REQUEST);
+		}
+		
 
-		return new ResponseEntity<>("E-mail already exists", HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>("unauthorized or empty base", HttpStatus.UNAUTHORIZED);
 	}
 
 	@Override

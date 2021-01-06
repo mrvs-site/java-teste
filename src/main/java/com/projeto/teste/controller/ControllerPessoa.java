@@ -105,13 +105,7 @@ public class ControllerPessoa {
 		
 		String token = request.getHeader(SecurityConstants.HEADER_STRING);
 		
-		Usuario u = null;
 		UsernamePasswordAuthenticationToken usuario = this.token.getAuthentication(token);
-//		
-//		usuario.getPrincipal();s
-//		 SecurityContextHolder.getContext().setAuthentication(true);
-		
-//		Usuario u  = repositorioUsuario.findByFirstName(token.getAuthentication(request).getPrincipal().toString());
 		
 		return ResponseEntity.ok().body(repositorioUsuario.findByFirstName(usuario.getPrincipal().toString()));
 		
