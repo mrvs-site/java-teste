@@ -3,8 +3,6 @@ package com.projeto.teste.security;
 import java.util.ArrayList;
 import java.util.Date;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Component;
 
@@ -17,17 +15,14 @@ import com.projeto.teste.exception.JsonApiErrorMessage;
 @Component
 public class TokenUtil {
 
-	private UsuarioToken userToken; 
-
 	public UsuarioToken criarToken(Usuario usuario) {
-		String token = SecurityConstants.TOKEN_PREFIX + JWT.create().withSubject(usuario.getFirstName())
+		String token = SecurityConstants.TOKEN_PREFIX + JWT.create().withSubject(usuario.getEmail())
 				.withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
 				.sign(Algorithm.HMAC512(SecurityConstants.SECRET.getBytes()));
-		
+
 		return new UsuarioToken(usuario.getFirstName(), token);
 	}
-	
-	
+
 	public UsernamePasswordAuthenticationToken getAuthentication(String token) {
 		try {
 			if (token != null) {

@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +42,7 @@ public class ControllerPessoa {
 	AuthenticationManager authenticationManager;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> signUp(@Valid @RequestBody Usuario usuario, HttpServletResponse res) throws IOException {
+	public ResponseEntity<?> signUp(@RequestBody Usuario usuario, HttpServletResponse res) throws IOException {
 		usuario.setPassword(bCryptPasswordEncoder.encode(usuario.getPassword()));
 		repositorioUsuario.save(usuario);
 
@@ -92,24 +91,22 @@ public class ControllerPessoa {
 	}
 
 	@PostMapping("/signin")
-	public ResponseEntity<?> signin(@RequestBody Login login){
+	public ResponseEntity<?> signin(@RequestBody Login login) {
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(login.getUser(), login.getPassword()));
-        Usuario u  = repositorioUsuario.findByEmail(login.getUser());
-        
+		Usuario u = repositorioUsuario.findByEmail(login.getUser());
+
 		return ResponseEntity.ok().body(token.criarToken(u));
 	}
-	
-	
+
 	@GetMapping("/me")
-	public ResponseEntity<?> me(HttpServletRequest request){
-		
+	public ResponseEntity<?> me(HttpServletRequest request) {
+
 		String token = request.getHeader(SecurityConstants.HEADER_STRING);
-		
+
 		UsernamePasswordAuthenticationToken usuario = this.token.getAuthentication(token);
-		
-		return ResponseEntity.ok().body(repositorioUsuario.findByFirstName(usuario.getPrincipal().toString()));
-		
-		
+
+		return ResponseEntity.ok().body(repositorioUsuario.findByEmail(usuario.getPrincipal().toString()));
+
 	}
 
 }

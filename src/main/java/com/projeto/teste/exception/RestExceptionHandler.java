@@ -21,7 +21,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
 	public ResponseEntity<?> handleAnyException(Exception e) {
 
 		if (e instanceof BadCredentialsException) {
-			return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), "Invalid e-mail or password"),
+			return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), "Missing fields"),
 					HttpStatus.BAD_REQUEST);
 		}
 
@@ -31,7 +31,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler impleme
 		}
 
 		if (e instanceof NullPointerException) {
-			return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), "Missing fields"),
+			return new ResponseEntity<>(new Error(HttpStatus.BAD_REQUEST.value(), "Invalid e-mail or password"),
 					HttpStatus.BAD_REQUEST);
 		}
 		
