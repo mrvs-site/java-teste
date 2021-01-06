@@ -16,20 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/error")
 public class JsonErrorController extends AbstractErrorController {
 
-    public JsonErrorController(final ErrorAttributes errorAttributes) {
-        super(errorAttributes);
-    }
-
+	public JsonErrorController(final ErrorAttributes errorAttributes) {
+		super(errorAttributes);
+	}
+	
 	@GetMapping
-    public ResponseEntity<Map<String, Object>> error(final HttpServletRequest request) {
-        final Map<String, Object> body = this.getErrorAttributes(request, true);
-        final HttpStatus status = this.getStatus(request);
-        return new ResponseEntity<>(body, status);
-    }
+	public ResponseEntity<Map<String, Object>> error(final HttpServletRequest request) {
+		final Map<String, Object> body = this.getErrorAttributes(request, true);
+		final HttpStatus status = this.getStatus(request);
+		return new ResponseEntity<>(body, status);
+	}
 
-    @Override
-    public String getErrorPath() {
-        return "/error";
-    }
+	@Override
+	public String getErrorPath() {
+		return "/error";
+	}
 
+	
 }

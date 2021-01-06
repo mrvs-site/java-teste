@@ -15,6 +15,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.projeto.teste.exception.JsonApiErrorMessage;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -52,7 +53,8 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			}
 
 		} catch (Exception e) {
- 		}
+			new JsonApiErrorMessage().setErro(e);
+		}
 		return null;
 	}
 }
